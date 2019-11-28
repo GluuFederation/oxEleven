@@ -9,7 +9,7 @@
 	<parent>
 		<artifactId>oxeleven</artifactId>
 		<groupId>org.gluu</groupId>
-		<version>4.0.Final</version>
+		<version>4.0.1.Final</version>
 	</parent>
 
 	<build>
