@@ -9,7 +9,7 @@
 	<parent>
 		<artifactId>oxeleven</artifactId>
 		<groupId>org.gluu</groupId>
-		<version>5.0.0-SNAPSHOT</version>
+		<version>4.3.1-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -127,12 +127,6 @@
 				<dependency>
 					<groupId>org.hibernate</groupId>
 					<artifactId>hibernate-validator-cdi</artifactId>
-				</dependency>
-
-				<dependency>
-					<groupId>org.jboss.spec.javax.ejb</groupId>
-					<artifactId>jboss-ejb-api_3.2_spec</artifactId>
-					<scope>provided</scope>
 				</dependency>
 			</dependencies>
 
