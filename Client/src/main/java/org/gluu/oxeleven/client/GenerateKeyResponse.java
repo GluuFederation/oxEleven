@@ -20,8 +20,9 @@ import static org.gluu.oxeleven.model.GenerateKeyResponseParam.Y;
 
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.gluu.oxeleven.util.StringUtils;
-import org.jboss.resteasy.client.ClientResponse;
 import org.json.JSONObject;
 
 /**
@@ -42,7 +43,7 @@ public class GenerateKeyResponse extends BaseResponse {
     private String y;
     private List<String> x5c;
 
-    public GenerateKeyResponse(ClientResponse<String> clientResponse) {
+    public GenerateKeyResponse(Response clientResponse) {
         super(clientResponse);
 
         JSONObject jsonObject = getJSONEntity();

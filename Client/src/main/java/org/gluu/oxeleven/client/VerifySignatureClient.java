@@ -7,8 +7,12 @@
 package org.gluu.oxeleven.client;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
 
-import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import com.google.common.base.Strings;
 
@@ -57,22 +61,26 @@ public class VerifySignatureClient extends BaseClient<VerifySignatureRequest, Ve
 
     @Override
     public VerifySignatureResponse exec() throws Exception {
-        clientRequest = new ClientRequest(url);
+    	ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
+    	WebTarget webTarget = resteasyClient.target(url);
+
+        Builder clientRequest = webTarget.request();
         clientRequest.header("Content-Type", getRequest().getMediaType());
-        clientRequest.setHttpMethod(getRequest().getHttpMethod());
-        if (!Strings.isNullOrEmpty(getRequest().getAccessToken())) {
+
+    	if (!Strings.isNullOrEmpty(getRequest().getAccessToken())) {
             clientRequest.header("Authorization", "Bearer " + getRequest().getAccessToken());
         }
-
-        if (getRequest().getVerifySignatureRequestParam() != null) {
-            clientRequest.body(getRequest().getMediaType(), toPrettyJson(getRequest().getVerifySignatureRequestParam()));
-        }
+//        clientRequest.setHttpMethod(getRequest().getHttpMethod());
 
         // Call REST Service and handle response
         if (HttpMethod.POST.equals(request.getHttpMethod())) {
-            clientResponse = clientRequest.post(String.class);
+        	String body = "{}";
+            if (getRequest().getVerifySignatureRequestParam() != null) {
+                body = toPrettyJson(getRequest().getVerifySignatureRequestParam());
+            }
+            clientResponse = clientRequest.buildPost(Entity.entity(body, getRequest().getMediaType())).invoke();
         } else {
-            clientResponse = clientRequest.get(String.class);
+            clientResponse = clientRequest.buildGet().invoke();
         }
 
         setResponse(new VerifySignatureResponse(clientResponse));

@@ -8,12 +8,14 @@ package org.gluu.oxeleven.client;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.logging.Logger;
+import org.jboss.logging.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,8 +32,9 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
     protected String url;
     protected BaseRequest request;
     protected BaseResponse response;
-    protected ClientRequest clientRequest;
-    protected ClientResponse<String> clientResponse;
+    protected WebTarget webTarget = null;
+    protected Form requestForm = new Form();
+    protected Response clientResponse;
 
     public BaseClient(String url) {
         this.url = url;
@@ -44,9 +47,9 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
     protected void addRequestParam(String key, String value) {
         if (!Strings.isNullOrEmpty(key) && !Strings.isNullOrEmpty(value)) {
             if (HttpMethod.POST.equals(request.getHttpMethod())) {
-                clientRequest.formParameter(key, value);
+            	requestForm.param(key, value);
             } else {
-                clientRequest.queryParameter(key, value);
+            	webTarget.queryParam(key, value);
             }
         }
     }
@@ -54,9 +57,9 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
     protected void addRequestParam(String key, Long value) {
         if (!Strings.isNullOrEmpty(key) && value != null) {
             if (HttpMethod.POST.equals(request.getHttpMethod())) {
-                clientRequest.formParameter(key, value);
+            	requestForm.param(key, value.toString());
             } else {
-                clientRequest.queryParameter(key, value);
+            	webTarget.queryParam(key, value);
             }
         }
     }
@@ -64,9 +67,9 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
     protected void addRequestParam(String key, String[] value) {
         if (!Strings.isNullOrEmpty(key) && value != null) {
             if (HttpMethod.POST.equals(request.getHttpMethod())) {
-                clientRequest.formParameter(key, value);
+            	requestForm.param(key, Arrays.toString(value));
             } else {
-                clientRequest.queryParameter(key, value);
+            	webTarget.queryParam(key, value);
             }
         }
     }

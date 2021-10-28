@@ -9,8 +9,12 @@ package org.gluu.oxeleven.client;
 import static org.gluu.oxeleven.model.DeleteKeyRequestParam.KEY_ID;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
 
-import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import com.google.common.base.Strings;
 
@@ -59,20 +63,24 @@ public class DeleteKeyClient extends BaseClient<DeleteKeyRequest, DeleteKeyRespo
 
     @Override
     public DeleteKeyResponse exec() throws Exception {
-        clientRequest = new ClientRequest(url);
+    	ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
+    	WebTarget webTarget = resteasyClient.target(url);
+
+        Builder clientRequest = webTarget.request();
+
+        addRequestParam(KEY_ID, getRequest().getAlias());
+
         clientRequest.header("Content-Type", getRequest().getMediaType());
-        clientRequest.setHttpMethod(getRequest().getHttpMethod());
+//        clientRequest.setHttpMethod(getRequest().getHttpMethod());
         if (!Strings.isNullOrEmpty(getRequest().getAccessToken())) {
             clientRequest.header("Authorization", "Bearer " + getRequest().getAccessToken());
         }
 
-        addRequestParam(KEY_ID, getRequest().getAlias());
-
         // Call REST Service and handle response
         if (HttpMethod.POST.equals(request.getHttpMethod())) {
-            clientResponse = clientRequest.post(String.class);
+            clientResponse = clientRequest.buildPost(Entity.entity("{}", getRequest().getMediaType())).invoke();
         } else {
-            clientResponse = clientRequest.get(String.class);
+            clientResponse = clientRequest.buildGet().invoke();
         }
 
         setResponse(new DeleteKeyResponse(clientResponse));

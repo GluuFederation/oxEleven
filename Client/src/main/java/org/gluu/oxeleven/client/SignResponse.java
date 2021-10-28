@@ -8,7 +8,8 @@ package org.gluu.oxeleven.client;
 
 import static org.gluu.oxeleven.model.SignResponseParam.SIGNATURE;
 
-import org.jboss.resteasy.client.ClientResponse;
+import javax.ws.rs.core.Response;
+
 import org.json.JSONObject;
 
 /**
@@ -19,7 +20,7 @@ public class SignResponse extends BaseResponse {
 
     private String signature;
 
-    public SignResponse(ClientResponse<String> clientResponse) {
+    public SignResponse(Response clientResponse) {
         super(clientResponse);
 
         JSONObject jsonObject = getJSONEntity();

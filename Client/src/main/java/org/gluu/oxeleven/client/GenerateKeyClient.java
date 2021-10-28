@@ -10,8 +10,12 @@ import static org.gluu.oxeleven.model.GenerateKeyRequestParam.EXPIRATION_TIME;
 import static org.gluu.oxeleven.model.GenerateKeyRequestParam.SIGNATURE_ALGORITHM;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
 
-import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import com.google.common.base.Strings;
 
@@ -60,9 +64,13 @@ public class GenerateKeyClient extends BaseClient<GenerateKeyRequest, GenerateKe
 
     @Override
     public GenerateKeyResponse exec() throws Exception {
-        clientRequest = new ClientRequest(url);
+    	ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
+    	WebTarget webTarget = resteasyClient.target(url);
+
+        Builder clientRequest = webTarget.request();
+
         clientRequest.header("Content-Type", getRequest().getMediaType());
-        clientRequest.setHttpMethod(getRequest().getHttpMethod());
+//        clientRequest.setHttpMethod(getRequest().getHttpMethod());
         if (!Strings.isNullOrEmpty(getRequest().getAccessToken())) {
             clientRequest.header("Authorization", "Bearer " + getRequest().getAccessToken());
         }
@@ -76,9 +84,9 @@ public class GenerateKeyClient extends BaseClient<GenerateKeyRequest, GenerateKe
 
         // Call REST Service and handle response
         if (HttpMethod.POST.equals(request.getHttpMethod())) {
-            clientResponse = clientRequest.post(String.class);
+            clientResponse = clientRequest.buildPost(Entity.entity("{}", getRequest().getMediaType())).invoke();
         } else {
-            clientResponse = clientRequest.get(String.class);
+            clientResponse = clientRequest.buildGet().invoke();
         }
 
         setResponse(new GenerateKeyResponse(clientResponse));

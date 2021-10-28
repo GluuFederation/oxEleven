@@ -8,7 +8,8 @@ package org.gluu.oxeleven.client;
 
 import static org.gluu.oxeleven.model.DeleteKeyResponseParam.DELETED;
 
-import org.jboss.resteasy.client.ClientResponse;
+import javax.ws.rs.core.Response;
+
 import org.json.JSONObject;
 
 /**
@@ -19,7 +20,7 @@ public class DeleteKeyResponse extends BaseResponse {
 
     private boolean deleted;
 
-    public DeleteKeyResponse(ClientResponse<String> clientResponse) {
+    public DeleteKeyResponse(Response clientResponse) {
         super(clientResponse);
 
         JSONObject jsonObject = getJSONEntity();

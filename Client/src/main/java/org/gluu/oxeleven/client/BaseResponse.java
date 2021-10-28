@@ -7,8 +7,8 @@
 package org.gluu.oxeleven.client;
 
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.client.ClientResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,13 +23,13 @@ public abstract class BaseResponse {
     protected String entity;
     protected MultivaluedMap<String, Object> headers;
 
-    public BaseResponse(ClientResponse<String> clientResponse) {
+    public BaseResponse(Response clientResponse) {
         if (clientResponse != null) {
             status = clientResponse.getStatus();
-            entity = clientResponse.getEntity(String.class);
+            entity = clientResponse.readEntity(String.class);
             headers = clientResponse.getHeaders();
-            if (clientResponse.getLocationLink() != null) {
-                location = clientResponse.getLocationLink().getHref();
+            if (clientResponse.getLocation() != null) {
+                location = clientResponse.getLocation().toString();
             }
         }
     }
