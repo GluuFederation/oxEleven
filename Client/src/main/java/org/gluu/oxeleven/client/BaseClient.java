@@ -49,7 +49,7 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
             if (HttpMethod.POST.equals(request.getHttpMethod())) {
             	requestForm.param(key, value);
             } else {
-            	webTarget.queryParam(key, value);
+            	webTarget = webTarget.queryParam(key, value);
             }
         }
     }
@@ -59,7 +59,7 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
             if (HttpMethod.POST.equals(request.getHttpMethod())) {
             	requestForm.param(key, value.toString());
             } else {
-            	webTarget.queryParam(key, value);
+            	webTarget = webTarget.queryParam(key, value);
             }
         }
     }
@@ -69,7 +69,7 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
             if (HttpMethod.POST.equals(request.getHttpMethod())) {
             	requestForm.param(key, Arrays.toString(value));
             } else {
-            	webTarget.queryParam(key, value);
+            	webTarget = webTarget.queryParam(key, value);
             }
         }
     }
