@@ -89,7 +89,11 @@ public class GenerateKeyClient extends BaseClient<GenerateKeyRequest, GenerateKe
             clientResponse = clientRequest.buildGet().invoke();
         }
 
-        setResponse(new GenerateKeyResponse(clientResponse));
+        try {
+        	setResponse(new GenerateKeyResponse(clientResponse));
+        } finally {
+        	clientResponse.close();
+        }
 
         return getResponse();
     }

@@ -83,7 +83,11 @@ public class VerifySignatureClient extends BaseClient<VerifySignatureRequest, Ve
             clientResponse = clientRequest.buildGet().invoke();
         }
 
-        setResponse(new VerifySignatureResponse(clientResponse));
+        try {
+        	setResponse(new VerifySignatureResponse(clientResponse));
+        } finally {
+        	clientResponse.close();
+        }
 
         return getResponse();
     }

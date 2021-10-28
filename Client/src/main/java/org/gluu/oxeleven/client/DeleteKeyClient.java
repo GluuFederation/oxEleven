@@ -83,7 +83,11 @@ public class DeleteKeyClient extends BaseClient<DeleteKeyRequest, DeleteKeyRespo
             clientResponse = clientRequest.buildGet().invoke();
         }
 
-        setResponse(new DeleteKeyResponse(clientResponse));
+        try {
+        	setResponse(new DeleteKeyResponse(clientResponse));
+        } finally {
+        	clientResponse.close();
+        }
 
         return getResponse();
     }

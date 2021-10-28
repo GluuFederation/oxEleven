@@ -83,7 +83,11 @@ public class SignClient extends BaseClient<SignRequest, SignResponse> {
             clientResponse = clientRequest.buildGet().invoke();
         }
 
-        setResponse(new SignResponse(clientResponse));
+        try {
+        	setResponse(new SignResponse(clientResponse));
+        } finally {
+        	clientResponse.close();
+        }
 
         return getResponse();
     }
