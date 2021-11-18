@@ -69,7 +69,7 @@ public abstract class BaseClient<T extends BaseRequest, V extends BaseResponse> 
             if (HttpMethod.POST.equals(request.getHttpMethod())) {
             	requestForm.param(key, Arrays.toString(value));
             } else {
-            	webTarget = webTarget.queryParam(key, value);
+                webTarget.queryParam(key, Arrays.toString(value));
             }
         }
     }
