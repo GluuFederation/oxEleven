@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>oxeleven</artifactId>
 		<groupId>org.gluu</groupId>
-		<version>4.5.3-SNAPSHOT</version>
+		<version>4.5.3.Final</version>
 	</parent>
 
 	<build>
